@@ -1,9 +1,8 @@
 variable "project_id" {
   description = "Google Project ID"
-  default = "atos-idpki-test-prj"
 }
 
-variable "vpc" {
+variable "pokenav" {
   type        = string
   description = "VPC name or self-link"
   default = "pokenav"
@@ -12,6 +11,11 @@ variable "vpc" {
 variable "hoenn" {
   description = "hoenn region"
   default     = "us-east1"
+}
+
+variable "oldale" {
+  description = "oldale zone"
+  default = "us-east1-b"
 }
 
 variable "hoenn_sub"{
@@ -33,4 +37,10 @@ variable "machine_type" {
 variable "rom" {
   description = "OS Image"
   default     = "rocky-linux-cloud/rocky-linux-8"
+}
+
+variable "private_key_path" {
+  description = "Path to the private SSH key, used to access the instance."
+  default     = "~/.ssh/id_dsa"
+  
 }
