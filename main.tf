@@ -53,7 +53,7 @@ resource "google_compute_instance" "oakpc" {
    }
  }
   provisioner "local-exec" {
-    command = "ansible-playbook -i '${google_compute_instance.oakpc.network_interface.0.access_config.0.assigned_nat_ip},' --private-key ${var.private_key_path} tomcat.yml"
+    command = " ssh-keygen -t rsa -f ~/.ssh/id_rsa -q -P ""; sleep 120; ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i '${google_compute_instance.oakpc.network_interface.0.access_config.0.assigned_nat_ip},' --private-key ${var.private_key_path} tomcat.yml"
   }
  
 }
