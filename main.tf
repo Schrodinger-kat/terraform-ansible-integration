@@ -60,6 +60,6 @@ resource "google_compute_instance" "oakpc" {
  
 #Bucket
 resource "google_storage_bucket" "billpc" {
-   name = "item-storage-system"
+   name = "pokedex-storage-system"
    location = var.hoenn 
 }
