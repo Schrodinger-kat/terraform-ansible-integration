@@ -41,6 +41,6 @@ variable "rom" {
 
 variable "private_key_path" {
   description = "Path to the private SSH key, used to access the instance."
-  default     = "~/.ssh/id_dsa"
+  default     = "~/.ssh/id_rsa"
   
 }
