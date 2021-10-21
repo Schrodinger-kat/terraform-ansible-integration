@@ -44,3 +44,12 @@ variable "private_key_path" {
   default     = "~/.ssh/id_rsa"
   
 }
+
+variable "user" {
+  description = "User name"
+}
+
+variable "public_key_path" {
+  description = "Path to the public SSH key, used to access the instance."
+  default     = "~/.ssh/id_rsa.pub"
+}
