@@ -33,7 +33,30 @@ resource "google_compute_firewall" "charizard" {
    ports    = ["80","8080","22"]
    }
 }
- 
+
+#Service Account
+resource "google_service_account" "cable_club" {
+  account_id = var.sa_id
+  display_name = "pokemon cable club"
+}
+
+resource "google_project_iam_member" "gba_binding" {
+  project = var.project_id
+  role    = "roles/storage.objectViewer"
+  member  = "serviceAccount:${google_service_account.cable_club.email}"
+}
+
+
+#Bucket Policy
+data "google_iam_policy" "policy" {
+  binding {
+    role = "roles/storage.objectViewer"
+    members = [
+        "serviceAccount:${google_service_account.cable_club.email}"
+    ]
+  }
+}
+
 #Compute Engine
 resource "google_compute_instance" "oakpc" {
    name = "oakspc"
@@ -52,17 +75,30 @@ resource "google_compute_instance" "oakpc" {
     
    }
  }
-  metadata {
+  metadata = {
     name     = "Terraform Ansible Integration"
     ssh-keys = "${var.user}:${file("${var.public_key_path}")}"
+  }
+  service_account {
+    email  = google_service_account.cable_club.email
+    scopes = ["cloud-platform"]
   }
   provisioner "local-exec" {
     command = "sleep 30; ansible-playbook -i '${google_compute_instance.oakpc.network_interface.0.access_config.0.nat_ip},' -e 'ansible_python_interpreter=/usr/bin/python3' --private-key ${var.private_key_path} ansible_script.yml"
   }
+ 
+}
+
+#Bucket
+resource "google_storage_bucket" "billpc" {
+   name = "pokedex-system-iss"
+   location = var.hoenn 
+   force_destroy = true
+}
+
+resource "google_storage_bucket_iam_policy" "gba_policy" {
+  bucket = google_storage_bucket.billpc.name
+  policy_data = data.google_iam_policy.policy.policy_data
 }
  
-#Cloud Bucket
-resource "google_storage_bucket" "billpc" {
-   name = "pokedex-system-pss"
-   location = var.hoenn 
-}
+
