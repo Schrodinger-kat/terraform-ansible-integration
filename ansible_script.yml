@@ -1,18 +1,30 @@
 ---
-- name: download activemq
-  hosts: localhost
+- name: Create directory activemq
+  hosts: all
   tasks:
-    - name: Download activemq from a remote_src
-      get_url:
-        url: https://dlcdn.apache.org/activemq/5.16.3/apache-activemq-5.16.3-bin.tar.gz
-        dest: /tmp/activemq
-        mode: 0755
+   - name: Create a Directory /opt/activemq
+     become: yes
+     file:
+       path: /opt/activemq
+       state: directory
+       mode: 0755
 
-- name: Unarchive activemq
-  hosts: localhost
+
+# - name: download activemq
+#   hosts: all
+#   tasks:
+#     - name: Download activemq from a remote_src
+#       get_url:
+#         url: https://dlcdn.apache.org/activemq/5.16.3/apache-activemq-5.16.3-bin.tar.gz
+#         dest: /tmp/
+#         mode: 0440
+
+- name: Download & Unarchive activemq
+  hosts: all
   tasks:
-    - name: Unarchive downloaded activemq.tar into /opt
+    - name: Unarchive downloaded activemq.tar into /opt/activemq/
+      become: yes
       unarchive:
-        src: /tmp/activemq/apache-activemq-5.16.3-bin.tar.gz
-        dest: /opt/activemq
+        src: https://dlcdn.apache.org/activemq/5.16.3/apache-activemq-5.16.3-bin.tar.gz
+        dest: /opt/activemq/
         remote_src: yes
