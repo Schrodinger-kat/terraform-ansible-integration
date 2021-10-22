@@ -1,59 +1,21 @@
 ---
-#Install JDK and TOMCAT
-- hosts: all
-
+- name: Download activemq
+  hosts: localhost
   tasks:
-  - name: Get the JDK installer
-    get_url:
-      url: http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.rpm
-      dest: /tmp
-      headers: "Cookie:' gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie'"
-      validate_certs: no
-      checksum: "sha256: 3d1e8cc66f4fd77acef6093329d5dd95bd06e4a03926c52df794f311a0c093f8"
+   - name: Create a Directory /opt/activemq
+     become: yes
+     file:
+       path: /opt/activemq
+       state: directory
+       mode: 0755
+       owner: pjishnu
+       group: pjishnu
 
-  - name: Install the JDK
-    yum:
-      name: /tmp/jdk-8u131-linux-x64.rpm
-      state: present
-    become: yes
-
-  - name: Remove installer
-    file:
-      state: absent
-      path: /tmp/jdk-8u131-linux-x64.rpm
-
-  - name: Creating a TOMCAT user
-    user:
-      name: tomcat
-    become: yes
-
-  - name: Get TOMCAT installer
-    get_url:
-      url: http://ftp.riken.jp/net/apache/tomcat/tomcat-8/v8.5.15/bin/apache-tomcat-8.5.15.tar.gz
-      dest: ~/apache-tomcat-8.5.15.tar.gz
-      checksum: "sha1:67650d6deda0c0ba9e8c7db7fe4006c35d6dc7db"
-    become: yes
-    become_user: tomcat
-
-  - name: Install tomcat
-    unarchive:
-      src: ~/apache-tomcat-8.5.15.tar.gz
-      dest:  ~/
-      remote_src: yes
-    become: yes
-    become_user: tomcat
-
-  - name: Remove installer
-    file:
-      state: absent
-      path: ~/apache-tomcat-8.5.15.tar.gz
-    become: yes
-    become_user: tomcat
-
-  - name: Open the port used by Tomcat on the firewall
-    firewalld:
-      port: 8080/tcp
-      permanent: yes
-      immediate: yes
-      state: enabled
-    become: yes
+- name: download activemq
+  hosts: localhost
+  tasks:
+    - name: Download activemq
+      get_url:
+        url: https://dlcdn.apache.org/activemq/5.16.3/apache-activemq-5.16.3-bin.tar.gz
+        dest: /opt/activemq
+        mode: 0755
