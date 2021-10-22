@@ -1,5 +1,11 @@
 variable "project_id" {
   description = "Google Project ID"
+  default = "idpki-nonprod-host"
+}
+
+variable "user" {
+  description = "User name for the instances"
+  default = "pjishnu"
 }
 
 variable "pokenav" {
@@ -40,16 +46,18 @@ variable "rom" {
 }
 
 variable "private_key_path" {
-  description = "Path to the private SSH key, used to access the instance."
+  description = "Path to the private SSH key"
   default     = "~/.ssh/id_rsa"
   
 }
 
-variable "user" {
-  description = "User name"
+variable "public_key_path" {
+  description = "Path to the public SSH key"
+  default     = "~/.ssh/id_rsa.pub"
 }
 
-variable "public_key_path" {
-  description = "Path to the public SSH key, used to access the instance."
-  default     = "~/.ssh/id_rsa.pub"
+variable "sa_id" {
+    description = "Service Account Id"
+    default = "cable-club"
+  
 }
