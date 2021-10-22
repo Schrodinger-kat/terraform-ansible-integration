@@ -57,13 +57,12 @@ resource "google_compute_instance" "oakpc" {
     ssh-keys = "${var.user}:${file("${var.public_key_path}")}"
   }
   provisioner "local-exec" {
-    command = "sleep 60; ansible-playbook -i '${google_compute_instance.oakpc.network_interface.0.access_config.0.nat_ip},' --private-key ${var.private_key_path} ansible_script.yml"
+    command = "sleep 30; ansible-playbook -i '${google_compute_instance.oakpc.network_interface.0.access_config.0.nat_ip},' -e 'ansible_python_interpreter=/usr/bin/python3' --private-key ${var.private_key_path} ansible_script.yml"
   }
- 
 }
  
-#Bucket
+#Cloud Bucket
 resource "google_storage_bucket" "billpc" {
-   name = "pokedex-storage-system"
+   name = "pokedex-system-pss"
    location = var.hoenn 
 }
