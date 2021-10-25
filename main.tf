@@ -37,7 +37,7 @@ resource "google_compute_firewall" "charizard" {
 #Service Account
 resource "google_service_account" "cable_club" {
   account_id = var.sa_id
-  display_name = "pokemon cable club"
+  display_name = "pcc"
 }
 
 resource "google_project_iam_member" "gba_binding" {
@@ -46,6 +46,12 @@ resource "google_project_iam_member" "gba_binding" {
   member  = "serviceAccount:${google_service_account.cable_club.email}"
 }
 
+#Bucket
+resource "google_storage_bucket" "billpc" {
+   name = "pokedex-system-iss"
+   location = var.hoenn 
+   force_destroy = true
+}
 
 #Bucket Policy
 data "google_iam_policy" "policy" {
@@ -55,6 +61,11 @@ data "google_iam_policy" "policy" {
         "serviceAccount:${google_service_account.cable_club.email}"
     ]
   }
+}
+
+resource "google_storage_bucket_iam_policy" "gba_policy" {
+  bucket = google_storage_bucket.billpc.name
+  policy_data = data.google_iam_policy.policy.policy_data
 }
 
 #Compute Engine
@@ -88,17 +99,3 @@ resource "google_compute_instance" "oakpc" {
   }
  
 }
-
-#Bucket
-resource "google_storage_bucket" "billpc" {
-   name = "pokedex-system-iss"
-   location = var.hoenn 
-   force_destroy = true
-}
-
-resource "google_storage_bucket_iam_policy" "gba_policy" {
-  bucket = google_storage_bucket.billpc.name
-  policy_data = data.google_iam_policy.policy.policy_data
-}
- 
-
