@@ -4,7 +4,7 @@ variable "project_id" {
 }
 
 variable "user" {
-  description = "User name for the instances"
+  description = "User name"
   default = "pjishnu"
 }
 
@@ -57,7 +57,7 @@ variable "public_key_path" {
 }
 
 variable "sa_id" {
-    description = "Service Account Id"
-    default = "cable-club"
+  description = "Service account name!"
+  default = "cable-club"
   
 }
